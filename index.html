@@ -17,8 +17,8 @@
             <label>Mileage (km/liter):</label><br>
             <input type="number" id="mileage" placeholder="e.g., 15"><br><br>
 
-            <label>Fuel Price (per liter):</label><br>
-            <input type="number" id="fuelPrice" placeholder="e.g., 280"><br><br>
+            <label>Fuel Price (per unit):</label><br>
+            <input type="number" id="fuelPrice" placeholder="e.g., 1.50"><br><br>
 
             <button onclick="calculateCost()">Calculate Cost</button>
         </div>
@@ -34,7 +34,8 @@
 
             if (distance && mileage && price) {
                 let totalCost = (distance / mileage) * price;
-                document.getElementById("result").innerText = "Total Trip Cost: " + totalCost.toFixed(2) + " PKR";
+                // Yahan se PKR hata diya gaya hai
+                document.getElementById("result").innerText = "Total Trip Cost: " + totalCost.toFixed(2);
             } else {
                 alert("Please enter all values!");
             }
