@@ -8,52 +8,57 @@
 </head>
 <body>
     <div class="container">
-        <div id="authSection" style="text-align: right; margin-bottom: 20px;">
-            <button id="loginBtn" onclick="googleLogin()">Login with Google</button>
+        <div id="authSection" class="auth-box">
+            <button id="loginBtn" class="btn-auth" onclick="googleLogin()">Login with Google</button>
             <div id="userProfile" style="display: none;">
                 <span id="userName"></span>
-                <button onclick="googleLogout()">Logout</button>
+                <button class="btn-logout" onclick="googleLogout()">Logout</button>
             </div>
         </div>
 
         <h2>Smart Trip Calculator</h2>
         
-        <div>
-            <label>Select Your Country:</label><br>
+        <div class="calculator-form">
+            <label>Select Country:</label>
             <select id="country">
                 <option value="USA">United States ($)</option>
                 <option value="UK">United Kingdom (£)</option>
                 <option value="Pakistan">Pakistan (PKR)</option>
                 <option value="India">India (₹)</option>
-                <option value="Canada">Canada (C$)</option>
-                <option value="Australia">Australia (A$)</option>
                 <option value="UAE">UAE (AED)</option>
-            </select><br><br>
+            </select>
 
-            <label>Distance (km):</label><br>
-            <input type="number" id="distance" placeholder="e.g., 100"><br><br>
+            <label>Select Vehicle:</label>
+            <select id="vehicleType">
+                <option value="Car">Car</option>
+                <option value="Bike">Bike</option>
+                <option value="Tractor">Tractor</option>
+                <option value="Truck">Truck</option>
+                <option value="Van">Van</option>
+            </select>
 
-            <label>Mileage (km/liter):</label><br>
-            <input type="number" id="mileage" placeholder="e.g., 15"><br><br>
+            <label>Distance (km):</label>
+            <input type="number" id="distance" placeholder="e.g., 100">
 
-            <label>Fuel Price (per unit):</label><br>
-            <input type="number" id="fuelPrice" placeholder="e.g., 1.50"><br><br>
+            <label>Mileage (km/liter):</label>
+            <input type="number" id="mileage" placeholder="e.g., 15">
 
-            <label>Toll/Extra Charges:</label><br>
-            <input type="number" id="toll" placeholder="e.g., 50"><br><br>
+            <label>Fuel Price (per unit):</label>
+            <input type="number" id="fuelPrice" placeholder="e.g., 1.50">
 
-            <button onclick="calculateCost()">Calculate Cost</button>
+            <label>Toll/Extra Charges:</label>
+            <input type="number" id="toll" placeholder="e.g., 50">
+
+            <button class="btn-calculate" onclick="calculateCost()">Calculate Total Cost</button>
         </div>
 
         <h3 id="result"></h3>
     </div>
 
     <script type="module">
-        // Import Firebase functions
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAtMBMSm35eTg6Dpa2W3S1woGXCK5VVNoo",
             authDomain: "smart-trip-calculator.firebaseapp.com",
@@ -63,53 +68,13 @@
             appId: "1:169488130950:web:d98a1fa9b8f1a40f060207"
         };
 
-        // Initialize
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // Global functions for buttons
-        window.googleLogin = function() {
-            signInWithPopup(auth, provider).catch((error) => alert(error.message));
-        };
+        window.googleLogin = () => signInWithPopup(auth, provider);
+        window.googleLogout = () => signOut(auth);
 
-        window.googleLogout = function() {
-            signOut(auth);
-        };
-
-        // Check if user is logged in
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById("loginBtn").style.display = "none";
-                document.getElementById("userProfile").style.display = "block";
-                document.getElementById("userName").innerText = "Hi, " + user.displayName;
-            } else {
-                document.getElementById("loginBtn").style.display = "block";
-                document.getElementById("userProfile").style.display = "none";
-            }
-        });
-
-        // Calculator Logic
-        window.calculateCost = function() {
-            let country = document.getElementById("country").value;
-            let distance = parseFloat(document.getElementById("distance").value);
-            let mileage = parseFloat(document.getElementById("mileage").value);
-            let price = parseFloat(document.getElementById("fuelPrice").value);
-            let toll = parseFloat(document.getElementById("toll").value) || 0;
-
-            const currencySymbols = {
-                "USA": "$", "UK": "£", "Pakistan": "PKR ",
-                "India": "₹", "Canada": "C$", "Australia": "A$", "UAE": "AED "
-            };
-
-            if (distance && mileage && price) {
-                let totalCost = ((distance / mileage) * price) + toll;
-                let symbol = currencySymbols[country];
-                document.getElementById("result").innerText = "Total Trip Cost: " + symbol + totalCost.toFixed(2);
-            } else {
-                alert("Please enter all values!");
-            }
-        }
-    </script>
-</body>
-</html>
+                
