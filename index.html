@@ -1,9 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Test Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Trip Calculator</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button:hover { background-color: #218838; }
+        #userProfile { margin-bottom: 15px; }
+    </style>
 </head>
 <body>
-    <h1 style="color: green; text-align: center; margin-top: 50px;">Website Working!</h1>
+
+    <div class="container">
+        <div id="authSection">
+            <button id="loginBtn" onclick="googleLogin()">Login with Google</button>
+            <div id="userProfile" style="display: none;">
+                <p id="userName"></p>
+                <button onclick="googleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <h2>Smart Trip Calculator</h2>
+        <select id="country">
+            <option value="USA">USA ($)</option>
+            <option value="Pakistan">Pakistan (PKR)</option>
+        </select>
+        <select id="vehicleType">
+            <option value="Car">Car</option>
+            <option value="Bike">Bike</option>
+        </select>
+        <input type="number" id="distance" placeholder="Distance (km)">
+        <input type="number" id="mileage" placeholder="Mileage (km/l)">
+        <input type="number" id="fuelPrice" placeholder="Fuel Price">
+        <input type="number" id="toll" placeholder="Toll/Extra">
+        <button onclick="calculateCost()">Calculate Total Cost</button>
+        <h3 id="result"></h3>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtMBMSm35eTg6Dpa2W3S1woGXCK5VVNoo",
+            authDomain: "smart-trip-calculator.firebaseapp.com",
+            projectId: "smart-trip-calculator",
+            storageBucket: "smart-trip-calculator.firebasestorage.app",
+            messagingSenderId: "169488130950",
+            appId: "1:169488130950:web:d98a1fa9b8f1a40f060207"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        // Login Logic
+        window.googleLogin = () => auth.signInWithPopup(provider);
+        window.googleLogout = () => auth.signOut();
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById("loginBtn").style.display = "none";
+                document.getElementById("userProfile").style.display = "block";
+                document.getElementById("userName").innerText = "Hi, " + user.displayName;
+            } else {
+                document.getElementById("loginBtn").style.display = "block";
+                document.getElementById("userProfile").style.display = "none";
+            }
+        });
+
+        // Calc Logic
+        window.calculateCost = function() {
+            let distance = parseFloat(document.getElementById("distance").value);
+            let mileage = parseFloat(document.getElementById("mileage").value);
+            let price = parseFloat(document.getElementById("fuelPrice").value);
+            let toll = parseFloat(document.getElementById("toll").value) || 0;
+            
+            if (distance && mileage && price) {
+                let total = ((distance / mileage) * price) + toll;
+                document.getElementById("result").innerText = "Total Cost: " + total.toFixed(2);
+            } else {
+                alert("Please fill all fields!");
+            }
+        }
+    </script>
 </body>
 </html>
