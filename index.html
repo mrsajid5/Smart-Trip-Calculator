@@ -11,46 +11,58 @@
             appId: "1:169488130950:web:d98a1fa9b8f1a40f060207"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const provider = new GoogleAuthProvider();
 
-        // Login/Logout Logic
-        window.googleLogin = () => signInWithPopup(auth, provider);
-        window.googleLogout = () => signOut(auth);
+            window.googleLogin = () => signInWithPopup(auth, provider);
+            window.googleLogout = () => signOut(auth);
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById("loginBtn").style.display = "none";
-                document.getElementById("userProfile").style.display = "block";
-                document.getElementById("userName").innerText = "Hi, " + user.displayName;
-            } else {
-                document.getElementById("loginBtn").style.display = "block";
-                document.getElementById("userProfile").style.display = "none";
+            onAuthStateChanged(auth, (user) => {
+                // Check if elements exist before using them
+                const loginBtn = document.getElementById("loginBtn");
+                const userProfile = document.getElementById("userProfile");
+                const userName = document.getElementById("userName");
+
+                if (user) {
+                    if(loginBtn) loginBtn.style.display = "none";
+                    if(userProfile) userProfile.style.display = "block";
+                    if(userName) userName.innerText = "Hi, " + user.displayName;
+                } else {
+                    if(loginBtn) loginBtn.style.display = "block";
+                    if(userProfile) userProfile.style.display = "none";
+                }
+            });
+
+            window.calculateCost = function() {
+                // Check if inputs exist
+                if(!document.getElementById("distance")) { console.error("ID missing!"); return; }
+                
+                let country = document.getElementById("country").value;
+                let vehicle = document.getElementById("vehicleType").value;
+                let distance = parseFloat(document.getElementById("distance").value);
+                let mileage = parseFloat(document.getElementById("mileage").value);
+                let price = parseFloat(document.getElementById("fuelPrice").value);
+                let toll = parseFloat(document.getElementById("toll").value) || 0;
+
+                const currencySymbols = {
+                    "USA": "$", "UK": "£", "Pakistan": "PKR ",
+                    "India": "₹", "Canada": "C$", "Australia": "A$", "UAE": "AED "
+                };
+
+                if (distance && mileage && price) {
+                    let totalCost = ((distance / mileage) * price) + toll;
+                    let symbol = currencySymbols[country];
+                    document.getElementById("result").innerText = "Total Trip Cost (" + vehicle + "): " + symbol + totalCost.toFixed(2);
+                } else {
+                    alert("Please enter all values correctly!");
+                }
             }
-        });
-
-        // Calculation Logic
-        window.calculateCost = function() {
-            let country = document.getElementById("country").value;
-            let vehicle = document.getElementById("vehicleType").value;
-            let distance = parseFloat(document.getElementById("distance").value);
-            let mileage = parseFloat(document.getElementById("mileage").value);
-            let price = parseFloat(document.getElementById("fuelPrice").value);
-            let toll = parseFloat(document.getElementById("toll").value) || 0;
-
-            const currencySymbols = {
-                "USA": "$", "UK": "£", "Pakistan": "PKR ",
-                "India": "₹", "Canada": "C$", "Australia": "A$", "UAE": "AED "
-            };
-
-            if (distance && mileage && price) {
-                let totalCost = ((distance / mileage) * price) + toll;
-                let symbol = currencySymbols[country];
-                document.getElementById("result").innerText = "Total Trip Cost (" + vehicle + "): " + symbol + totalCost.toFixed(2);
-            } else {
-                alert("Please enter all values correctly!");
-            }
+            console.log("Script loaded successfully!");
+        } catch (error) {
+            console.error("Critical Error:", error);
+            alert("Error in code: " + error.message);
         }
     </script>
     
