@@ -15,12 +15,14 @@ body {
     text-align: center;
 }
 
-input {
+/* Yahan humne input aur select dono ko style kar diya hai */
+input, select {
     width: 90%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
 }
 
 button {
