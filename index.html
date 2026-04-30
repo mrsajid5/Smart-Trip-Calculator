@@ -5,24 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Trip Calculator</title>
     <style>
-        body { font-family: sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        #userProfile { margin-bottom: 15px; }
+        /* Modern Glassmorphism Design */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 { color: #333; margin-bottom: 25px; }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: #2a5298; outline: none; }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #1e3c72; transform: translateY(-2px); }
+
+        #result {
+            margin-top: 25px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #2a5298;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2 id="mainTitle">Smart Trip Calculator</h2>
+        <h2>Smart Trip Calculator</h2>
         
-        <select id="country" onchange="updateUI()">
+        <select id="country">
             <option value="USA">United States (USD)</option>
             <option value="UK">United Kingdom (GBP)</option>
             <option value="Canada">Canada (CAD)</option>
-            <option value="UAE">UAE (AED)</option>
-            <option value="Saudi">Saudi Arabia (SAR)</option>
         </select>
 
         <select id="vehicleType">
@@ -33,74 +87,24 @@
         <input type="number" id="distance" placeholder="Distance (km)">
         <input type="number" id="mileage" placeholder="Mileage (km/l)">
         <input type="number" id="fuelPrice" placeholder="Fuel Price">
-        <button id="calcBtn" onclick="calculateCost()">Calculate Total</button>
+        
+        <button onclick="calculateCost()">Calculate Total</button>
         <h3 id="result"></h3>
     </div>
 
     <script>
-        // 1. Country & Language Data
-        const countryData = {
-            "USA": { currency: "$", lang: "en" },
-            "UK": { currency: "£", lang: "en" },
-            "Canada": { currency: "C$", lang: "en" },
-            "UAE": { currency: "AED ", lang: "ar" },
-            "Saudi": { currency: "SAR ", lang: "ar" }
-        };
-
-        // 2. Translation Dictionary
-        const translations = {
-            "en": {
-                title: "Smart Trip Calculator",
-                btn: "Calculate Total",
-                dist: "Distance (km)",
-                mile: "Mileage (km/l)",
-                fuel: "Fuel Price",
-                result: "Total Cost: "
-            },
-            "ar": {
-                title: "حاسبة الرحلة الذكية",
-                btn: "احسب التكلفة",
-                dist: "المسافة (كم)",
-                mile: "استهلاك الوقود (كم/لتر)",
-                fuel: "سعر الوقود",
-                result: "التكلفة الإجمالية: "
-            }
-        };
-
-        // 3. Update Function
-        function updateUI() {
-            const country = document.getElementById("country").value;
-            const lang = countryData[country].lang;
-            const t = translations[lang];
-
-            // UI Elements Update
-            document.getElementById("mainTitle").innerText = t.title;
-            document.getElementById("calcBtn").innerText = t.btn;
-            document.getElementById("distance").placeholder = t.dist;
-            document.getElementById("mileage").placeholder = t.mile;
-            document.getElementById("fuelPrice").placeholder = t.fuel;
-        }
-
-        // 4. Calculation Function
-        window.calculateCost = function() {
-            const country = document.getElementById("country").value;
-            const currency = countryData[country].currency;
-            const lang = countryData[country].lang;
-            
+        function calculateCost() {
             let distance = parseFloat(document.getElementById("distance").value);
             let mileage = parseFloat(document.getElementById("mileage").value);
             let price = parseFloat(document.getElementById("fuelPrice").value);
 
             if (distance && mileage && price) {
                 let total = (distance / mileage) * price;
-                document.getElementById("result").innerText = translations[lang].result + currency + total.toFixed(2);
+                document.getElementById("result").innerText = "Total Cost: " + total.toFixed(2);
             } else {
                 alert("Please fill all fields!");
             }
         }
-
-        // Initialize on load
-        updateUI();
     </script>
 </body>
 </html>
