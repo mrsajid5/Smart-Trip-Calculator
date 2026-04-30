@@ -1,60 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Trip Calculator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <div id="authSection" class="auth-box">
-            <button id="loginBtn" class="btn-auth" onclick="googleLogin()">Login with Google</button>
-            <div id="userProfile" style="display: none;">
-                <span id="userName"></span>
-                <button class="btn-logout" onclick="googleLogout()">Logout</button>
-            </div>
-        </div>
-
-        <h2>Smart Trip Calculator</h2>
-        
-        <div class="calculator-form">
-            <label>Select Country:</label>
-            <select id="country">
-                <option value="USA">United States ($)</option>
-                <option value="UK">United Kingdom (£)</option>
-                <option value="Pakistan">Pakistan (PKR)</option>
-                <option value="India">India (₹)</option>
-                <option value="UAE">UAE (AED)</option>
-            </select>
-
-            <label>Select Vehicle:</label>
-            <select id="vehicleType">
-                <option value="Car">Car</option>
-                <option value="Bike">Bike</option>
-                <option value="Tractor">Tractor</option>
-                <option value="Truck">Truck</option>
-                <option value="Van">Van</option>
-            </select>
-
-            <label>Distance (km):</label>
-            <input type="number" id="distance" placeholder="e.g., 100">
-
-            <label>Mileage (km/liter):</label>
-            <input type="number" id="mileage" placeholder="e.g., 15">
-
-            <label>Fuel Price (per unit):</label>
-            <input type="number" id="fuelPrice" placeholder="e.g., 1.50">
-
-            <label>Toll/Extra Charges:</label>
-            <input type="number" id="toll" placeholder="e.g., 50">
-
-            <button class="btn-calculate" onclick="calculateCost()">Calculate Total Cost</button>
-        </div>
-
-        <h3 id="result"></h3>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
@@ -72,9 +15,42 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
+        // Login/Logout Logic
         window.googleLogin = () => signInWithPopup(auth, provider);
         window.googleLogout = () => signOut(auth);
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                
+                document.getElementById("loginBtn").style.display = "none";
+                document.getElementById("userProfile").style.display = "block";
+                document.getElementById("userName").innerText = "Hi, " + user.displayName;
+            } else {
+                document.getElementById("loginBtn").style.display = "block";
+                document.getElementById("userProfile").style.display = "none";
+            }
+        });
+
+        // Calculation Logic
+        window.calculateCost = function() {
+            let country = document.getElementById("country").value;
+            let vehicle = document.getElementById("vehicleType").value;
+            let distance = parseFloat(document.getElementById("distance").value);
+            let mileage = parseFloat(document.getElementById("mileage").value);
+            let price = parseFloat(document.getElementById("fuelPrice").value);
+            let toll = parseFloat(document.getElementById("toll").value) || 0;
+
+            const currencySymbols = {
+                "USA": "$", "UK": "£", "Pakistan": "PKR ",
+                "India": "₹", "Canada": "C$", "Australia": "A$", "UAE": "AED "
+            };
+
+            if (distance && mileage && price) {
+                let totalCost = ((distance / mileage) * price) + toll;
+                let symbol = currencySymbols[country];
+                document.getElementById("result").innerText = "Total Trip Cost (" + vehicle + "): " + symbol + totalCost.toFixed(2);
+            } else {
+                alert("Please enter all values correctly!");
+            }
+        }
+    </script>
+    
