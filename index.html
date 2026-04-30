@@ -8,6 +8,14 @@
 </head>
 <body>
     <div class="container">
+        <div id="authSection" style="text-align: right; margin-bottom: 20px;">
+            <button id="loginBtn" onclick="googleLogin()">Login with Google</button>
+            <div id="userProfile" style="display: none;">
+                <span id="userName"></span>
+                <button onclick="googleLogout()">Logout</button>
+            </div>
+        </div>
+
         <h2>Smart Trip Calculator</h2>
         
         <div>
@@ -40,34 +48,66 @@
         <h3 id="result"></h3>
     </div>
 
-    <script>
-        function calculateCost() {
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtMBMSm35eTg6Dpa2W3S1woGXCK5VVNoo",
+            authDomain: "smart-trip-calculator.firebaseapp.com",
+            projectId: "smart-trip-calculator",
+            storageBucket: "smart-trip-calculator.firebasestorage.app",
+            messagingSenderId: "169488130950",
+            appId: "1:169488130950:web:d98a1fa9b8f1a40f060207"
+        };
+
+        // Initialize
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // Global functions for buttons
+        window.googleLogin = function() {
+            signInWithPopup(auth, provider).catch((error) => alert(error.message));
+        };
+
+        window.googleLogout = function() {
+            signOut(auth);
+        };
+
+        // Check if user is logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById("loginBtn").style.display = "none";
+                document.getElementById("userProfile").style.display = "block";
+                document.getElementById("userName").innerText = "Hi, " + user.displayName;
+            } else {
+                document.getElementById("loginBtn").style.display = "block";
+                document.getElementById("userProfile").style.display = "none";
+            }
+        });
+
+        // Calculator Logic
+        window.calculateCost = function() {
             let country = document.getElementById("country").value;
             let distance = parseFloat(document.getElementById("distance").value);
             let mileage = parseFloat(document.getElementById("mileage").value);
             let price = parseFloat(document.getElementById("fuelPrice").value);
-            
-            // Toll tax ki value lein, agar khaali ho toh 0 count karega
             let toll = parseFloat(document.getElementById("toll").value) || 0;
 
             const currencySymbols = {
-                "USA": "$",
-                "UK": "£",
-                "Pakistan": "PKR ",
-                "India": "₹",
-                "Canada": "C$",
-                "Australia": "A$",
-                "UAE": "AED "
+                "USA": "$", "UK": "£", "Pakistan": "PKR ",
+                "India": "₹", "Canada": "C$", "Australia": "A$", "UAE": "AED "
             };
 
             if (distance && mileage && price) {
-                // Logic: (Fuel Cost) + Toll Tax
                 let totalCost = ((distance / mileage) * price) + toll;
-                
                 let symbol = currencySymbols[country];
                 document.getElementById("result").innerText = "Total Trip Cost: " + symbol + totalCost.toFixed(2);
             } else {
-                alert("Please enter Distance, Mileage, and Fuel Price!");
+                alert("Please enter all values!");
             }
         }
     </script>
