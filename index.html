@@ -11,6 +11,17 @@
         <h2>Smart Trip Calculator</h2>
         
         <div>
+            <label>Select Your Country:</label><br>
+            <select id="country">
+                <option value="USA">United States</option>
+                <option value="UK">United Kingdom</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="India">India</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="UAE">UAE</option>
+            </select><br><br>
+
             <label>Distance (km):</label><br>
             <input type="number" id="distance" placeholder="e.g., 100"><br><br>
 
@@ -34,7 +45,6 @@
 
             if (distance && mileage && price) {
                 let totalCost = (distance / mileage) * price;
-                // Dollar sign add kar diya gaya hai
                 document.getElementById("result").innerText = "Total Trip Cost: $" + totalCost.toFixed(2);
             } else {
                 alert("Please enter all values!");
