@@ -13,13 +13,13 @@
         <div>
             <label>Select Your Country:</label><br>
             <select id="country">
-                <option value="USA">United States</option>
-                <option value="UK">United Kingdom</option>
-                <option value="Pakistan">Pakistan</option>
-                <option value="India">India</option>
-                <option value="Canada">Canada</option>
-                <option value="Australia">Australia</option>
-                <option value="UAE">UAE</option>
+                <option value="USA">United States ($)</option>
+                <option value="UK">United Kingdom (£)</option>
+                <option value="Pakistan">Pakistan (PKR)</option>
+                <option value="India">India (₹)</option>
+                <option value="Canada">Canada (C$)</option>
+                <option value="Australia">Australia (A$)</option>
+                <option value="UAE">UAE (AED)</option>
             </select><br><br>
 
             <label>Distance (km):</label><br>
@@ -39,13 +39,31 @@
 
     <script>
         function calculateCost() {
+            // Dropdown aur inputs ki values utha rahe hain
+            let country = document.getElementById("country").value;
             let distance = document.getElementById("distance").value;
             let mileage = document.getElementById("mileage").value;
             let price = document.getElementById("fuelPrice").value;
 
+            // Country ke hisab se currency symbols ki list
+            const currencySymbols = {
+                "USA": "$",
+                "UK": "£",
+                "Pakistan": "PKR ",
+                "India": "₹",
+                "Canada": "C$",
+                "Australia": "A$",
+                "UAE": "AED "
+            };
+
             if (distance && mileage && price) {
                 let totalCost = (distance / mileage) * price;
-                document.getElementById("result").innerText = "Total Trip Cost: $" + totalCost.toFixed(2);
+                
+                // Select ki gayi country ka symbol lein
+                let symbol = currencySymbols[country];
+                
+                // Result show karein
+                document.getElementById("result").innerText = "Total Trip Cost: " + symbol + totalCost.toFixed(2);
             } else {
                 alert("Please enter all values!");
             }
