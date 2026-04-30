@@ -71,12 +71,13 @@
 <body>
 
     <div class="container">
-        <h2>Smart Trip Calculator</h2>
+        <h2 id="mainTitle">Smart Trip Calculator</h2>
         
-        <select id="country">
+        <select id="country" onchange="updateUI()">
             <option value="USA">United States (USD)</option>
             <option value="UK">United Kingdom (GBP)</option>
             <option value="Canada">Canada (CAD)</option>
+            <option value="UAE">UAE (AED)</option>
         </select>
 
         <select id="vehicleType">
@@ -88,23 +89,58 @@
         <input type="number" id="mileage" placeholder="Mileage (km/l)">
         <input type="number" id="fuelPrice" placeholder="Fuel Price">
         
-        <button onclick="calculateCost()">Calculate Total</button>
+        <button id="calcBtn" onclick="calculateCost()">Calculate Total</button>
         <h3 id="result"></h3>
     </div>
 
     <script>
-        function calculateCost() {
+        // Country Config
+        const countryData = {
+            "USA": { currency: "$", lang: "en" },
+            "UK": { currency: "£", lang: "en" },
+            "Canada": { currency: "C$", lang: "en" },
+            "UAE": { currency: "AED ", lang: "ar" }
+        };
+
+        // Translations
+        const translations = {
+            "en": { title: "Smart Trip Calculator", btn: "Calculate Total", dist: "Distance (km)", mile: "Mileage (km/l)", fuel: "Fuel Price", result: "Total Cost: " },
+            "ar": { title: "حاسبة الرحلة الذكية", btn: "احسب التكلفة", dist: "المسافة (كم)", mile: "استهلاك الوقود (كم/لتر)", fuel: "سعر الوقود", result: "التكلفة الإجمالية: " }
+        };
+
+        // UI Update Logic
+        function updateUI() {
+            const country = document.getElementById("country").value;
+            const lang = countryData[country].lang;
+            const t = translations[lang];
+
+            document.getElementById("mainTitle").innerText = t.title;
+            document.getElementById("calcBtn").innerText = t.btn;
+            document.getElementById("distance").placeholder = t.dist;
+            document.getElementById("mileage").placeholder = t.mile;
+            document.getElementById("fuelPrice").placeholder = t.fuel;
+        }
+
+        // Calculation Logic
+        window.calculateCost = function() {
+            const country = document.getElementById("country").value;
+            const currency = countryData[country].currency;
+            const lang = countryData[country].lang;
+            
             let distance = parseFloat(document.getElementById("distance").value);
             let mileage = parseFloat(document.getElementById("mileage").value);
             let price = parseFloat(document.getElementById("fuelPrice").value);
 
             if (distance && mileage && price) {
                 let total = (distance / mileage) * price;
-                document.getElementById("result").innerText = "Total Cost: " + total.toFixed(2);
+                document.getElementById("result").innerText = translations[lang].result + currency + total.toFixed(2);
             } else {
                 alert("Please fill all fields!");
             }
         }
+
+        // Initialize
+        updateUI();
     </script>
 </body>
 </html>
