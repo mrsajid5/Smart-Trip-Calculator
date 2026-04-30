@@ -2,25 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Trip Calculator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Smart Trip Calculator</h2>
-    
-    <div>
-        <label>Distance (km):</label><br>
-        <input type="number" id="distance" placeholder="e.g., 100"><br><br>
+    <div class="container">
+        <h2>Smart Trip Calculator</h2>
+        
+        <div>
+            <label>Distance (km):</label><br>
+            <input type="number" id="distance" placeholder="e.g., 100"><br><br>
 
-        <label>Mileage (km/liter):</label><br>
-        <input type="number" id="mileage" placeholder="e.g., 15"><br><br>
+            <label>Mileage (km/liter):</label><br>
+            <input type="number" id="mileage" placeholder="e.g., 15"><br><br>
 
-        <label>Fuel Price (per liter):</label><br>
-        <input type="number" id="fuelPrice" placeholder="e.g., 280"><br><br>
+            <label>Fuel Price (per liter):</label><br>
+            <input type="number" id="fuelPrice" placeholder="e.g., 280"><br><br>
 
-        <button onclick="calculateCost()">Calculate Cost</button>
+            <button onclick="calculateCost()">Calculate Cost</button>
+        </div>
+
+        <h3 id="result"></h3>
     </div>
-
-    <h3 id="result"></h3>
 
     <script>
         function calculateCost() {
