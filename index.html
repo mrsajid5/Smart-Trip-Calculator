@@ -9,84 +9,98 @@
         .container { background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
         input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        button:hover { background-color: #218838; }
         #userProfile { margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div id="authSection">
-            <button id="loginBtn" onclick="googleLogin()">Login with Google</button>
-            <div id="userProfile" style="display: none;">
-                <p id="userName"></p>
-                <button onclick="googleLogout()">Logout</button>
-            </div>
-        </div>
-
-        <h2>Smart Trip Calculator</h2>
-        <select id="country">
-            <option value="USA">USA ($)</option>
-            <option value="Pakistan">Pakistan (PKR)</option>
+        <h2 id="mainTitle">Smart Trip Calculator</h2>
+        
+        <select id="country" onchange="updateUI()">
+            <option value="USA">United States (USD)</option>
+            <option value="UK">United Kingdom (GBP)</option>
+            <option value="Canada">Canada (CAD)</option>
+            <option value="UAE">UAE (AED)</option>
+            <option value="Saudi">Saudi Arabia (SAR)</option>
         </select>
+
         <select id="vehicleType">
             <option value="Car">Car</option>
             <option value="Bike">Bike</option>
         </select>
+
         <input type="number" id="distance" placeholder="Distance (km)">
         <input type="number" id="mileage" placeholder="Mileage (km/l)">
         <input type="number" id="fuelPrice" placeholder="Fuel Price">
-        <input type="number" id="toll" placeholder="Toll/Extra">
-        <button onclick="calculateCost()">Calculate Total Cost</button>
+        <button id="calcBtn" onclick="calculateCost()">Calculate Total</button>
         <h3 id="result"></h3>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAtMBMSm35eTg6Dpa2W3S1woGXCK5VVNoo",
-            authDomain: "smart-trip-calculator.firebaseapp.com",
-            projectId: "smart-trip-calculator",
-            storageBucket: "smart-trip-calculator.firebasestorage.app",
-            messagingSenderId: "169488130950",
-            appId: "1:169488130950:web:d98a1fa9b8f1a40f060207"
+        // 1. Country & Language Data
+        const countryData = {
+            "USA": { currency: "$", lang: "en" },
+            "UK": { currency: "£", lang: "en" },
+            "Canada": { currency: "C$", lang: "en" },
+            "UAE": { currency: "AED ", lang: "ar" },
+            "Saudi": { currency: "SAR ", lang: "ar" }
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
-
-        // Login Logic
-        window.googleLogin = () => auth.signInWithPopup(provider);
-        window.googleLogout = () => auth.signOut();
-
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                document.getElementById("loginBtn").style.display = "none";
-                document.getElementById("userProfile").style.display = "block";
-                document.getElementById("userName").innerText = "Hi, " + user.displayName;
-            } else {
-                document.getElementById("loginBtn").style.display = "block";
-                document.getElementById("userProfile").style.display = "none";
+        // 2. Translation Dictionary
+        const translations = {
+            "en": {
+                title: "Smart Trip Calculator",
+                btn: "Calculate Total",
+                dist: "Distance (km)",
+                mile: "Mileage (km/l)",
+                fuel: "Fuel Price",
+                result: "Total Cost: "
+            },
+            "ar": {
+                title: "حاسبة الرحلة الذكية",
+                btn: "احسب التكلفة",
+                dist: "المسافة (كم)",
+                mile: "استهلاك الوقود (كم/لتر)",
+                fuel: "سعر الوقود",
+                result: "التكلفة الإجمالية: "
             }
-        });
+        };
 
-        // Calc Logic
+        // 3. Update Function
+        function updateUI() {
+            const country = document.getElementById("country").value;
+            const lang = countryData[country].lang;
+            const t = translations[lang];
+
+            // UI Elements Update
+            document.getElementById("mainTitle").innerText = t.title;
+            document.getElementById("calcBtn").innerText = t.btn;
+            document.getElementById("distance").placeholder = t.dist;
+            document.getElementById("mileage").placeholder = t.mile;
+            document.getElementById("fuelPrice").placeholder = t.fuel;
+        }
+
+        // 4. Calculation Function
         window.calculateCost = function() {
+            const country = document.getElementById("country").value;
+            const currency = countryData[country].currency;
+            const lang = countryData[country].lang;
+            
             let distance = parseFloat(document.getElementById("distance").value);
             let mileage = parseFloat(document.getElementById("mileage").value);
             let price = parseFloat(document.getElementById("fuelPrice").value);
-            let toll = parseFloat(document.getElementById("toll").value) || 0;
-            
+
             if (distance && mileage && price) {
-                let total = ((distance / mileage) * price) + toll;
-                document.getElementById("result").innerText = "Total Cost: " + total.toFixed(2);
+                let total = (distance / mileage) * price;
+                document.getElementById("result").innerText = translations[lang].result + currency + total.toFixed(2);
             } else {
                 alert("Please fill all fields!");
             }
         }
+
+        // Initialize on load
+        updateUI();
     </script>
 </body>
 </html>
