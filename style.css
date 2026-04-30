@@ -1,46 +1,72 @@
+/* General Layout */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f6;
     display: flex;
     justify-content: center;
-    padding-top: 50px;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 10px;
 }
 
 .container {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 300px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Slightly deeper shadow */
+    width: 100%;
+    max-width: 400px; /* Better width for mobile/desktop */
+    box-sizing: border-box;
     text-align: center;
 }
 
-/* Yahan humne input aur select dono ko style kar diya hai */
+h2 { color: #333; margin-bottom: 20px; }
+
+/* Inputs aur Selects ki styling */
 input, select {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 16px;
+    box-sizing: border-box; /* Zaroori hai taake padding width ko kharab na kare */
+    transition: border-color 0.3s;
 }
 
+/* Professional Focus effect */
+input:focus, select:focus {
+    border-color: #28a745;
+    outline: none;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.2);
+}
+
+/* Button Styling */
 button {
     background-color: #28a745;
     color: white;
-    padding: 10px 20px;
+    padding: 12px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     width: 100%;
     font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
     background-color: #218838;
 }
 
+button:active {
+    transform: scale(0.98); /* Click karte waqt button halka sa dabega */
+}
+
+/* Result box */
 h3 {
-    color: #333;
-    margin-top: 20px;
+    color: #28a745;
+    margin-top: 25px;
+    font-size: 1.3em;
 }
