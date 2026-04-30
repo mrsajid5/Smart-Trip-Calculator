@@ -1,72 +1,34 @@
-/* General Layout */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 10px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Trip Calculator</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #218838; }
+        #result { color: #28a745; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Smart Trip Calculator</h2>
+        <input type="number" id="distance" placeholder="Distance (km)">
+        <select id="country">
+            <option value="USA">USA</option>
+            <option value="Pakistan">Pakistan</option>
+        </select>
+        <button onclick="calculateCost()">Calculate</button>
+        <h3 id="result"></h3>
+    </div>
 
-.container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Slightly deeper shadow */
-    width: 100%;
-    max-width: 400px; /* Better width for mobile/desktop */
-    box-sizing: border-box;
-    text-align: center;
-}
-
-h2 { color: #333; margin-bottom: 20px; }
-
-/* Inputs aur Selects ki styling */
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0 15px 0;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    box-sizing: border-box; /* Zaroori hai taake padding width ko kharab na kare */
-    transition: border-color 0.3s;
-}
-
-/* Professional Focus effect */
-input:focus, select:focus {
-    border-color: #28a745;
-    outline: none;
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.2);
-}
-
-/* Button Styling */
-button {
-    background-color: #28a745;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-button:active {
-    transform: scale(0.98); /* Click karte waqt button halka sa dabega */
-}
-
-/* Result box */
-h3 {
-    color: #28a745;
-    margin-top: 25px;
-    font-size: 1.3em;
-}
+    <script type="module">
+        // Apka wahi script code yahan paste karein
+        console.log("Website Load ho rahi hai...");
+        // Agar yahan error aaya to Console mein dikh jayega
+    </script>
+</body>
+</html>
