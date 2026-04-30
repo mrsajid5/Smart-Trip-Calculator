@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Trip Calculator</title>
     <style>
-        /* Modern Glassmorphism Design */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
         body {
@@ -74,10 +73,14 @@
         <h2 id="mainTitle">Smart Trip Calculator</h2>
         
         <select id="country" onchange="updateUI()">
-            <option value="USA">United States (USD)</option>
-            <option value="UK">United Kingdom (GBP)</option>
-            <option value="Canada">Canada (CAD)</option>
-            <option value="UAE">UAE (AED)</option>
+            <option value="USA">USA ($) - English</option>
+            <option value="UK">UK (£) - English</option>
+            <option value="Canada">Canada (C$) - English</option>
+            <option value="Australia">Australia (A$) - English</option>
+            <option value="Germany">Germany (€) - German</option>
+            <option value="Switzerland">Switzerland (CHF) - German</option>
+            <option value="UAE">UAE (AED) - Arabic</option>
+            <option value="Saudi">Saudi Arabia (SAR) - Arabic</option>
         </select>
 
         <select id="vehicleType">
@@ -94,21 +97,25 @@
     </div>
 
     <script>
-        // Country Config
+        // High CPM Countries Configuration
         const countryData = {
             "USA": { currency: "$", lang: "en" },
             "UK": { currency: "£", lang: "en" },
             "Canada": { currency: "C$", lang: "en" },
-            "UAE": { currency: "AED ", lang: "ar" }
+            "Australia": { currency: "A$", lang: "en" },
+            "Germany": { currency: "€", lang: "de" },
+            "Switzerland": { currency: "CHF ", lang: "de" },
+            "UAE": { currency: "AED ", lang: "ar" },
+            "Saudi": { currency: "SAR ", lang: "ar" }
         };
 
-        // Translations
+        // Multi-language Translations
         const translations = {
             "en": { title: "Smart Trip Calculator", btn: "Calculate Total", dist: "Distance (km)", mile: "Mileage (km/l)", fuel: "Fuel Price", result: "Total Cost: " },
-            "ar": { title: "حاسبة الرحلة الذكية", btn: "احسب التكلفة", dist: "المسافة (كم)", mile: "استهلاك الوقود (كم/لتر)", fuel: "سعر الوقود", result: "التكلفة الإجمالية: " }
+            "ar": { title: "حاسبة الرحلة الذكية", btn: "احسب التكلفة", dist: "المسافة (كم)", mile: "استهلاك الوقود (كم/لتر)", fuel: "سعر الوقود", result: "التكلفة الإجمالية: " },
+            "de": { title: "Rechner für intelligente Reisen", btn: "Gesamtkosten berechnen", dist: "Entfernung (km)", mile: "Kilometerstand (km/l)", fuel: "Kraftstoffpreis", result: "Gesamtkosten: " }
         };
 
-        // UI Update Logic
         function updateUI() {
             const country = document.getElementById("country").value;
             const lang = countryData[country].lang;
@@ -121,7 +128,6 @@
             document.getElementById("fuelPrice").placeholder = t.fuel;
         }
 
-        // Calculation Logic
         window.calculateCost = function() {
             const country = document.getElementById("country").value;
             const currency = countryData[country].currency;
@@ -139,7 +145,6 @@
             }
         }
 
-        // Initialize
         updateUI();
     </script>
 </body>
