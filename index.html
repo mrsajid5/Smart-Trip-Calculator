@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Smart Trip Calculator | Calculate Travel & Fuel Costs Instantly</title>
-    <meta name="description" content="Calculate your trip costs instantly with our Smart Trip Calculator. Supports multiple currencies including USD, GBP, EUR, and more. Perfect for accurate travel budgeting.">
-    <meta name="keywords" content="trip calculator, fuel cost calculator, travel budget planner, gas mileage calculator, global currency trip cost, international travel calculator">
+    <meta name="description" content="Calculate your trip costs instantly with our Smart Trip Calculator. Supports multiple currencies and international travel.">
+    <meta name="keywords" content="trip calculator, fuel cost calculator, travel budget planner, gas mileage calculator">
     <meta name="author" content="Sajid">
     
-    <meta property="og:title" content="Smart Trip Calculator | Calculate Travel Costs">
-    <meta property="og:description" content="Easily calculate fuel costs for your trips worldwide. Supports USD, GBP, EUR, CAD, AUD, and more.">
-    <meta property="og:type" content="website">
-
     <link rel="manifest" href="manifest.json">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5410200505056415" crossorigin="anonymous"></script>
@@ -25,90 +21,75 @@
       gtag('config', 'G-61T03JMGL6');
     </script>
 
+    <script src="https://accounts.google.com/gsi/client" async></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin: 0; 
+            padding: 20px; 
         }
-
-        .container {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
+        .container { 
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(20px); 
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 35px;
-            border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            width: 100%;
-            max-width: 400px;
-            color: white;
-            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            padding: 35px; 
+            border-radius: 25px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            width: 100%; 
+            max-width: 400px; 
+            color: white; 
+            text-align: center; 
         }
-
         h2 { font-weight: 600; margin-bottom: 25px; color: #fff; }
-
-        input, select {
-            width: 100%;
-            padding: 15px;
-            margin: 12px 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            appearance: none;
+        input, select { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-radius: 12px; 
+            background: rgba(255, 255, 255, 0.05); 
+            color: white; 
+            font-size: 16px; 
+            box-sizing: border-box; 
+            appearance: none; 
+        }
+        button { 
+            width: 100%; 
+            padding: 16px; 
+            background: #00e676; 
+            color: black; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            font-size: 16px; 
+            cursor: pointer; 
+            margin-top: 15px; 
             transition: 0.3s;
         }
-
-        select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 20px;
-        }
-
-        input:focus, select:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #00e676;
-            outline: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 16px;
-            background: #00e676;
-            color: black;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: 0.3s;
-        }
-
         button:hover { background: #00c853; transform: scale(1.02); }
-
-        #result {
-            margin-top: 25px;
-            font-size: 1.4em;
-            font-weight: 600;
-            color: #00e676;
-        }
+        #result { margin-top: 25px; font-size: 1.4em; font-weight: 600; color: #00e676; }
+        .login-btn { margin-bottom: 20px; display: flex; justify-content: center; }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <div id="g_id_onload"
+             data-client_id="610861359763-hgrsakd3qg8mio373qt8nnhj03bp28up.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin login-btn" data-type="standard"></div>
+
         <h2 id="mainTitle">Smart Trip Calculator</h2>
         
         <select id="country" onchange="updateUI()">
@@ -136,11 +117,18 @@
     </div>
 
     <script>
-        // PWA Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
+        // Google Login Handler
+        function handleCredentialResponse(response) {
+            console.log("Logged in successfully");
+            alert("Login Successful! Welcome to Smart Trip Calculator.");
         }
 
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) { 
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed', err)); 
+        }
+
+        // Configuration
         const countryData = {
             "USA": { currency: "$", lang: "en" },
             "UK": { currency: "£", lang: "en" },
@@ -162,7 +150,6 @@
             const country = document.getElementById("country").value;
             const lang = countryData[country].lang;
             const t = translations[lang];
-
             document.getElementById("mainTitle").innerText = t.title;
             document.getElementById("calcBtn").innerText = t.btn;
             document.getElementById("distance").placeholder = t.dist;
@@ -182,10 +169,12 @@
             if (distance && mileage && price) {
                 let total = (distance / mileage) * price;
                 document.getElementById("result").innerText = translations[lang].result + currency + total.toFixed(2);
-            } else {
-                alert("Please fill all fields!");
+            } else { 
+                alert("Please fill all fields!"); 
             }
         }
+        
+        // Initial setup
         updateUI();
     </script>
 </body>
