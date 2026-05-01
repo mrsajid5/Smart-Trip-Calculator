@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Trip Calculator</title>
+    
+    <title>Smart Trip Calculator | Calculate Travel & Fuel Costs Instantly</title>
+    <meta name="description" content="Calculate your trip costs instantly with our Smart Trip Calculator. Supports multiple currencies including USD, GBP, EUR, and more. Perfect for accurate travel budgeting.">
+    <meta name="keywords" content="trip calculator, fuel cost calculator, travel budget planner, gas mileage calculator, global currency trip cost, international travel calculator">
+    <meta name="author" content="Sajid">
+    
+    <meta property="og:title" content="Smart Trip Calculator | Calculate Travel Costs">
+    <meta property="og:description" content="Easily calculate fuel costs for your trips worldwide. Supports USD, GBP, EUR, CAD, AUD, and more.">
+    <meta property="og:type" content="website">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -19,51 +28,69 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 35px;
             border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             width: 100%;
             max-width: 400px;
+            color: white;
             text-align: center;
         }
 
-        h2 { color: #333; margin-bottom: 25px; }
+        h2 { font-weight: 600; margin-bottom: 25px; color: #fff; }
 
         input, select {
             width: 100%;
             padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #eee;
-            border-radius: 15px;
+            margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
             font-size: 16px;
             box-sizing: border-box;
+            appearance: none;
             transition: 0.3s;
         }
 
-        input:focus { border-color: #2a5298; outline: none; }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+        }
+
+        input:focus, select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #00e676;
+            outline: none;
+        }
 
         button {
             width: 100%;
-            padding: 15px;
-            background: #2a5298;
-            color: white;
+            padding: 16px;
+            background: #00e676;
+            color: black;
             border: none;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
             cursor: pointer;
             margin-top: 15px;
             transition: 0.3s;
         }
 
-        button:hover { background: #1e3c72; transform: translateY(-2px); }
+        button:hover { background: #00c853; transform: scale(1.02); }
 
         #result {
             margin-top: 25px;
-            font-size: 20px;
+            font-size: 1.4em;
             font-weight: 600;
-            color: #2a5298;
+            color: #00e676;
         }
     </style>
 </head>
@@ -97,7 +124,6 @@
     </div>
 
     <script>
-        // High CPM Countries Configuration
         const countryData = {
             "USA": { currency: "$", lang: "en" },
             "UK": { currency: "£", lang: "en" },
@@ -109,7 +135,6 @@
             "Saudi": { currency: "SAR ", lang: "ar" }
         };
 
-        // Multi-language Translations
         const translations = {
             "en": { title: "Smart Trip Calculator", btn: "Calculate Total", dist: "Distance (km)", mile: "Mileage (km/l)", fuel: "Fuel Price", result: "Total Cost: " },
             "ar": { title: "حاسبة الرحلة الذكية", btn: "احسب التكلفة", dist: "المسافة (كم)", mile: "استهلاك الوقود (كم/لتر)", fuel: "سعر الوقود", result: "التكلفة الإجمالية: " },
@@ -128,7 +153,7 @@
             document.getElementById("fuelPrice").placeholder = t.fuel;
         }
 
-        window.calculateCost = function() {
+        function calculateCost() {
             const country = document.getElementById("country").value;
             const currency = countryData[country].currency;
             const lang = countryData[country].lang;
@@ -144,7 +169,6 @@
                 alert("Please fill all fields!");
             }
         }
-
         updateUI();
     </script>
 </body>
